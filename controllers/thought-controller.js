@@ -1,14 +1,10 @@
-const { Thought } = require('../models');
+const { Thought, Blogger } = require('../models');
 
 const thoughtController = {
     
     //get all Thoughts ==============================================================
     getAllThought(req,res) {
         Thought.find({})
-            // .populate({
-            //     path: 'thoughts',
-            //     select: '-__v'
-            // })
             .select('-__v')
             //.sort({ _id: -1 }) //this sorts them in descding order
             .then(dbThoughtData => res.json(dbThoughtData))
@@ -21,10 +17,6 @@ const thoughtController = {
     //get Thought by id ===============================================================
     getThoughtById({ params }, res) {
         Thought.findOne({ _id: params.id })
-            // .populate({
-            //     path: 'user',
-            //     select: '-__v'
-            // })
             .select('-__v')
         //console.log(params.id)
             .then(dbThoughtData => {
@@ -65,7 +57,7 @@ const thoughtController = {
 
     //update a Thought ======================================================================
     updateThought({ params, body }, res) {
-        Thought.findOneAndUpdate({ _id: params.id}, body, { new: true })
+        Thought.findOneAndUpdate({ _id: params.id}, body, { new: true, runValidators: true })
             .then(dbThoughtData => {
                 if(!dbThoughtData) {
                     res.status(404).json({ message: "No Thought found with this ID" });

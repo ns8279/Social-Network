@@ -50,7 +50,7 @@ const bloggerController = {
 
     //update a Blogger ======================================================================
     updateBlogger({ params, body }, res) {
-        Blogger.findOneAndUpdate({ _id: params.id}, body, { new: true })
+        Blogger.findOneAndUpdate({ _id: params.id}, body, { new: true, runValidators: true })
             .then(dbBloggerData => {
                 if(!dbBloggerData) {
                     res.status(404).json({ message: "No Blogger found with this ID" });
@@ -79,7 +79,67 @@ const bloggerController = {
             res.status(500).json(err);
         });  
             
+    },
+
+
+    //add friend ===============================================================================
+
+    // addReply({ params, body }, res) {                                                           
+    //     Comment.findOneAndUpdate(
+    //       { _id: params.commentId },
+    //       { $push: { replies: body } },
+    //       { new: true }
+    //     )
+    //       .then(dbPizzaData => {
+    //         if (!dbPizzaData) {
+    //           res.status(404).json({ message: 'No pizza found with this id!' });
+    //           return;
+    //         }
+    //         res.json(dbPizzaData);
+    //       })
+    //       .catch(err => res.json(err));
+    //   },
+
+
+    //   addThought({ params, body }, res) {
+    //     console.log(body);
+    //     Thought.create(body)
+    //       .then(({ _id }) => {
+    //         return Blogger.findOneAndUpdate(
+    //           { _id: params.bloggerId },
+    //           { $push: { thoughts: _id } },
+    //           { new: true }
+    //         );
+    //       })
+    //       .then(dbBloggerData => {
+    //         if (!dbBloggerData) {
+    //           res.status(404).json({ message: 'No user found with this id!' });
+    //           return;
+    //         }
+    //         res.json(dbBloggerData);
+    //       })
+    //       .catch(err => res.json(err));
+    // },
+
+    addFriend({ params, body }, res) {
+        Blogger.create(body)
+            .then(({ _id }) => {
+                return Blogger.findOneAndUpdate(
+                    { _id: params.bloggerId },
+                    { $push: { friends: _id }},
+                    { new: true }
+                );
+            })
+            .then(dbBloggerData => {
+                if (!dbBloggerData) {
+                  res.status(404).json({ message: 'No user found with this id!' });
+                  return;
+                }
+                res.json(dbBloggerData);
+              })
+              .catch(err => res.json(err));
     }
+
     
 
 
