@@ -50,11 +50,12 @@ const BloggerSchema = new Schema
 
 
 );
-// get total count of friends on retrievalUserSchema.virtual('friendCount').get(function() { return this.friends.length; });
+// get total count of friends on retrieval
+BloggerSchema.virtual('friendCount').get(function() { return this.friends.length; });
 
 
 //create the User model using the UserSchema
 const Blogger = model('Blogger', BloggerSchema);
 //Users.updateMany( {}, { $rename: { "userName": "username" } } );
-//export the USer model
+//export the Blogger model
 module.exports = Blogger;

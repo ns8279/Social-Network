@@ -86,6 +86,60 @@ const thoughtController = {
             res.status(500).json(err);
         });  
             
+    },
+
+
+    //add reactions to the thoughts ===========================================================
+    addReaction ({ params, body }, res) {
+        Thought.findOneAndUpdate(
+            { _id: params.id },
+            { $push: { reactions: body } },
+            {new: true, runValidators: true }
+        )
+        .populate({
+            path: 'reactions',
+            select: '-__v',
+            //select: 'reactionId'
+        })
+        .select('-__v')
+        .then(dbThoughtData => {
+            if(!dbThoughtData) {
+                res.status(404).json({ message: 'No thought associated with this id' });
+                return;
+            }
+            res.json(dbThoughtData);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        }); 
+
+    },
+
+    //Remove reactions from the thought ===========================================================
+    removeReaction({ params }, res) {
+        Thought.findOneAndUpdate(
+            { _id: params.id },
+            { $pull: { reactions: { reactionId: params.reactionId }} },
+            {new: true, runValidators: true }
+        )
+        .populate({
+            path: 'reactions',
+            select: '-__v'
+        })
+        .select('-__v')
+        .then(dbThoughtData => {
+            if(!dbThoughtData) {
+                res.status(404).json({ message: 'No thought associated with this id' });
+                return;
+            }
+            res.json(dbThoughtData);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        }); 
+
     }
 
 

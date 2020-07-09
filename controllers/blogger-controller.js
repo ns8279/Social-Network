@@ -83,7 +83,6 @@ const bloggerController = {
 
 
     //add friend ===============================================================================
-
     addFriend({ params }, res) {
         console.log(params);
         Blogger.findOneAndUpdate(
@@ -109,7 +108,7 @@ const bloggerController = {
           });
       },
 
-      //Delete friend 
+      //Delete friend =============================================================================
       removeFriend({ params }, res) {
         Blogger.findOneAndUpdate(
           { _id: params.id },
