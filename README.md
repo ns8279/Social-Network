@@ -17,7 +17,9 @@ The Social Network-backend application contains routes to APIs to create, get, u
 
 ## Deployed Application 
 
-[Walk-through Video]() 
+[User/Blogger](https://drive.google.com/file/d/1XU2cwmVNWHezMnOchXnJiNQd7cmeaUt3/view?usp=sharing) <br>
+[Thoughts](https://drive.google.com/file/d/1NYwzU0a895P_7FPXJO_2fVXmFJ5RAbM-/view?usp=sharing)
+
 
 
 ## User Story 
