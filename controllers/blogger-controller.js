@@ -84,61 +84,56 @@ const bloggerController = {
 
     //add friend ===============================================================================
 
-    // addReply({ params, body }, res) {                                                           
-    //     Comment.findOneAndUpdate(
-    //       { _id: params.commentId },
-    //       { $push: { replies: body } },
-    //       { new: true }
-    //     )
-    //       .then(dbPizzaData => {
-    //         if (!dbPizzaData) {
-    //           res.status(404).json({ message: 'No pizza found with this id!' });
-    //           return;
-    //         }
-    //         res.json(dbPizzaData);
-    //       })
-    //       .catch(err => res.json(err));
-    //   },
+    addFriend({ params }, res) {
+        console.log(params);
+        Blogger.findOneAndUpdate(
+          { _id: params.id },
+          { $push: { friends: params.friendId }},
+          { new: true, runValidators: true }
+        )
+          .populate({
+            path: 'friends',
+            select: '-__v'
+          })
+          .select('-__v')
+          .then(dbBloggerData => {
+            if (!dbBloggerData) {
+              res.status(404).json({ message: `No Blogger found with ID: ${params.id}`});
+              return;
+            }
+            res.json(dbBloggerData);
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(400).json(err);
+          });
+      },
 
-
-    //   addThought({ params, body }, res) {
-    //     console.log(body);
-    //     Thought.create(body)
-    //       .then(({ _id }) => {
-    //         return Blogger.findOneAndUpdate(
-    //           { _id: params.bloggerId },
-    //           { $push: { thoughts: _id } },
-    //           { new: true }
-    //         );
-    //       })
-    //       .then(dbBloggerData => {
-    //         if (!dbBloggerData) {
-    //           res.status(404).json({ message: 'No user found with this id!' });
-    //           return;
-    //         }
-    //         res.json(dbBloggerData);
-    //       })
-    //       .catch(err => res.json(err));
-    // },
-
-    addFriend({ params, body }, res) {
-        Blogger.create(body)
-            .then(({ _id }) => {
-                return Blogger.findOneAndUpdate(
-                    { _id: params.bloggerId },
-                    { $push: { friends: _id }},
-                    { new: true }
-                );
-            })
-            .then(dbBloggerData => {
-                if (!dbBloggerData) {
-                  res.status(404).json({ message: 'No user found with this id!' });
-                  return;
-                }
-                res.json(dbBloggerData);
-              })
-              .catch(err => res.json(err));
-    }
+      //Delete friend 
+      removeFriend({ params }, res) {
+        Blogger.findOneAndUpdate(
+          { _id: params.id },
+          { $pull: { friends: params.friendId }},
+          { new: true, runValidators: true }
+        )
+          .populate({
+            path: 'friends',
+            select: '-__v'
+          })
+          .select('-__v')
+          .then(dbBloggerData => {
+            if (!dbBloggerData) {
+              res.status(404).json({ message: `No Blogger found with ID: ${params.id}`});
+              return;
+            }
+            res.json(dbBloggerData);
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(400).json(err);
+          });
+      }
+    
 
     
 

@@ -15,8 +15,8 @@ router
 
 //SET up the friendlist route
 router  
-.route('/:bloggerId/friends/:friendId') 
+.route('/:id/friend/:friendId') 
 .post(addFriend) 
-// .delete(removeFriend)
+.delete(removeFriend)
 
 module.exports = router;
