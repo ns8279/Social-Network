@@ -92,7 +92,7 @@ const bloggerController = {
         )
           .populate({
             path: 'friends',
-            select: '-__v'
+            select: '_id'
           })
           .select('-__v')
           .then(dbBloggerData => {
@@ -117,7 +117,7 @@ const bloggerController = {
         )
           .populate({
             path: 'friends',
-            select: '-__v'
+            select: '_id'
           })
           .select('-__v')
           .then(dbBloggerData => {
